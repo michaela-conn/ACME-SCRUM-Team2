@@ -8,7 +8,7 @@ class Examples extends CI_Controller {
 
 		$this->load->database();
 		$this->load->helper('url');
-		$this ->load->model('login_model');
+		$this->load->model('login_model');
 		$this->load->library('grocery_CRUD');
 	}
 
@@ -31,11 +31,12 @@ class Examples extends CI_Controller {
 
 	public function offices_management()
 	{
-		       if(!$this->login_model->isLogged()){
+		 if(!$this->login_model->isLogged()){
                                  //you are not permitted to see this page, so go to the login page
                            $this->login_model->logout();
                            return; //just in case...
-	 }
+                      }
+
 		try{
 			$crud = new grocery_CRUD();
 
@@ -56,7 +57,7 @@ class Examples extends CI_Controller {
 
 	public function employees_management()
 	{
-		       if(!$this->login_model->isLogged()){
+		 if(!$this->login_model->isLogged()){
                                  //you are not permitted to see this page, so go to the login page
                            $this->login_model->logout();
                            return; //just in case...
@@ -81,7 +82,7 @@ class Examples extends CI_Controller {
 
 	public function customers_management()
 	{
-		       if(!$this->login_model->isLogged()){
+		 if(!$this->login_model->isLogged()){
                                  //you are not permitted to see this page, so go to the login page
                            $this->login_model->logout();
                            return; //just in case...
@@ -104,7 +105,7 @@ class Examples extends CI_Controller {
 
 	public function orders_management()
 	{
-		       if(!$this->login_model->isLogged()){
+		 if(!$this->login_model->isLogged()){
                                  //you are not permitted to see this page, so go to the login page
                            $this->login_model->logout();
                            return; //just in case...
@@ -126,7 +127,7 @@ class Examples extends CI_Controller {
 
 	public function products_management()
 	{
-		       if(!$this->login_model->isLogged()){
+		 if(!$this->login_model->isLogged()){
                                  //you are not permitted to see this page, so go to the login page
                            $this->login_model->logout();
                            return; //just in case...
@@ -151,7 +152,7 @@ class Examples extends CI_Controller {
 
 	public function film_management()
 	{
-		       if(!$this->login_model->isLogged()){
+		 if(!$this->login_model->isLogged()){
                                  //you are not permitted to see this page, so go to the login page
                            $this->login_model->logout();
                            return; //just in case...
@@ -279,13 +280,5 @@ class Examples extends CI_Controller {
 			return $output;
 		}
 	}
-public function users();
-{
-$crud = new grocery_CRUD();
-$crud->set_table('crud_users');
-$crud->set_subject('Users');
-$crud->required_fields('username','password');
-$crud->columns('username','password','permission');
-}
-}
 
+}
