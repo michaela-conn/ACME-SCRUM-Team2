@@ -1,2 +1,2 @@
 # ACME-SCRUM-Team2
-CODE IGNITER FILES: database.php (connection to database), main.php (displays tables)
+database.php (connection to database), main.php (displays tables), config.php (DONE, sets index page to blank)
