@@ -11,7 +11,6 @@ foreach($css_files as $file): ?>
 <body>
 	<div>
 		<a href='<?php echo site_url('examples/patients_management')?>'>Patients</a> |
-		<a href='<?php echo site_url('examples/multigrids')?>'>Multigrid [BETA]</a>
 		
 	</div>
 	<div style='height:20px;'></div>  
