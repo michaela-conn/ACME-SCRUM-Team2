@@ -10,7 +10,12 @@ foreach($css_files as $file): ?>
 </head>
 <body>
 	<div>
+		<a href='<?php echo site_url('examples/doctors_management')?>'>Doctors</a> |
 		<a href='<?php echo site_url('examples/patients_management')?>'>Patients</a> |
+		<a href='<?php echo site_url('examples/medications_management')?>'>Medications</a> |
+		<a href='<?php echo site_url('examples/prescriptions_management')?>'>Prescriptions</a> |
+		<a href='<?php echo site_url('examples/visits_management')?>'>Visits</a> | 
+		<a href='<?php echo site_url('examples/fev_management')?>'>FEV</a> |
 		
 	</div>
 	<div style='height:20px;'></div>  
