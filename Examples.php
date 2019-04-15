@@ -29,120 +29,66 @@ class Examples extends CI_Controller {
 		$this->_example_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
 	}
 
-	public function offices_management()
+	public function prescriptions_management()
 	{
-		       if(!$this->login_model->isLogged()){
-                                 //you are not permitted to see this page, so go to the login page
-                           $this->login_model->logout();
-                           return; //just in case...
-	 }
 		try{
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
-			$crud->set_table('offices');
-			$crud->set_subject('Office');
-			$crud->required_fields('city');
-			$crud->columns('city','country','phone','addressLine1','postalCode');
-
+			$crud->set_table('Patients');
+			$crud->set_subject('Patients');
+			$crud->required_fields('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
+			$crud->columns('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
+			
 			$output = $crud->render();
-
+			
 			$this->_example_output($output);
+			
+			}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+			}
+	}
 
+	public function visits_management()
+	{
+		try{
+			$crud = new grocery_CRUD();
+			
+			$crud->set_theme('datatables');
+			$crud->set_table('Visits');
+			$crud->set_subject('Visits');
+			$crud->required_fields('visit_id', 'doctor_id', 'patient_id', 'visit_date');
+			$crud->columns('visit_id', 'doctor_id', 'patient_id', 'visit_date');
+			
+			$output = $crud->render();
+			
+			$this->_example_output($output);
+			
 		}catch(Exception $e){
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
-		}
+			}
 	}
-
-	public function employees_management()
+	
+		public function fev_management()
 	{
-		       if(!$this->login_model->isLogged()){
-                                 //you are not permitted to see this page, so go to the login page
-                           $this->login_model->logout();
-                           return; //just in case...
-                      }
-
+		try{
 			$crud = new grocery_CRUD();
-
+			
 			$crud->set_theme('datatables');
-			$crud->set_table('employees');
-			$crud->set_relation('officeCode','offices','city');
-			$crud->display_as('officeCode','Office City');
-			$crud->set_subject('Employee');
-
-			$crud->required_fields('lastName');
-
-			$crud->set_field_upload('file_url','assets/uploads/files');
-
+			$crud->set_table('FEV');
+			$crud->set_subject('FEV');
+			$crud->required_fields('fev_id', 'visit_id', 'fev_number');
+			$crud->columns('fev_id', 'visit_id', 'fev_number');
+			
 			$output = $crud->render();
-
+			
 			$this->_example_output($output);
+			
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+			}
 	}
 
-	public function customers_management()
-	{
-		       if(!$this->login_model->isLogged()){
-                                 //you are not permitted to see this page, so go to the login page
-                           $this->login_model->logout();
-                           return; //just in case...
-                      }
-
-			$crud = new grocery_CRUD();
-
-			$crud->set_table('customers');
-			$crud->columns('customerName','contactLastName','phone','city','country','salesRepEmployeeNumber','creditLimit');
-			$crud->display_as('salesRepEmployeeNumber','from Employeer')
-				 ->display_as('customerName','Name')
-				 ->display_as('contactLastName','Last Name');
-			$crud->set_subject('Customer');
-			$crud->set_relation('salesRepEmployeeNumber','employees','lastName');
-
-			$output = $crud->render();
-
-			$this->_example_output($output);
-	}
-
-	public function orders_management()
-	{
-		       if(!$this->login_model->isLogged()){
-                                 //you are not permitted to see this page, so go to the login page
-                           $this->login_model->logout();
-                           return; //just in case...
-                      }
-
-			$crud = new grocery_CRUD();
-
-			$crud->set_relation('customerNumber','customers','{contactLastName} {contactFirstName}');
-			$crud->display_as('customerNumber','Customer');
-			$crud->set_table('orders');
-			$crud->set_subject('Order');
-			$crud->unset_add();
-			$crud->unset_delete();
-
-			$output = $crud->render();
-
-			$this->_example_output($output);
-	}
-
-	public function products_management()
-	{
-		       if(!$this->login_model->isLogged()){
-                                 //you are not permitted to see this page, so go to the login page
-                           $this->login_model->logout();
-                           return; //just in case...
-                      }
-
-			$crud = new grocery_CRUD();
-
-			$crud->set_table('products');
-			$crud->set_subject('Product');
-			$crud->unset_columns('productDescription');
-			$crud->callback_column('buyPrice',array($this,'valueToEuro'));
-
-			$output = $crud->render();
-
-			$this->_example_output($output);
-	}
 
 	public function valueToEuro($value, $row)
 	{
