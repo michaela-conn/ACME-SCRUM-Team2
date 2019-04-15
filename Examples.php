@@ -155,6 +155,25 @@ class Examples extends CI_Controller {
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
 			}
 	}
+	public function doctors_management()
+	{
+		try{
+			$crud = new grocery_CRUD();
+			
+			$crud->set_theme('datatables');
+			$crud->set_table('Doctors');
+			$crud->set_subject('Doctors');
+			$crud->required_fields('doctor_id', 'doctor_name');
+			$crud->columns('doctor_id', 'doctor_name');
+			
+			$output = $crud->render();
+			
+			$this->_example_output($output);
+			
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+			}
+	}
 
 
 	public function valueToEuro($value, $row)
