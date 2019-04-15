@@ -92,13 +92,13 @@ class Examples extends CI_Controller {
 				}
 			}
 
-		public function medications_management()
+	public function medications_management()
 		{
 			try{
 				$crud = new grocery_CRUD();
 				$crud->set_theme('datatables');
-				$crud->set_table('Prescriptions');
-				$crud->set_subject('Prescriptions');
+				$crud->set_table('Medications');
+				$crud->set_subject('Medications');
 				$crud->required_fields('med_id', 'med_name');
 				$crud->columns('med_id', 'med_name');
 				$crud->display_as('med_id','Medication ID');
