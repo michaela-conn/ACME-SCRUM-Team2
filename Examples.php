@@ -96,25 +96,6 @@ class Examples extends CI_Controller {
 		}
 	}
 
-	public function prescriptions_management()
-	{
-		try{
-			$crud = new grocery_CRUD();
-
-			$crud->set_theme('datatables');
-			$crud->set_table('Patients');
-			$crud->set_subject('Patients');
-			$crud->required_fields('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
-			$crud->columns('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
-			
-			$output = $crud->render();
-			
-			$this->_example_output($output);
-			
-			}catch(Exception $e){
-			show_error($e->getMessage().' --- '.$e->getTraceAsString());
-			}
-	}
 
 	public function visits_management()
 	{
@@ -144,6 +125,7 @@ class Examples extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('FEV');
 			$crud->set_subject('FEV');
+			$crud->display_as('fev_id','FEV ID');
 			$crud->required_fields('fev_id', 'visit_id', 'fev_number');
 			$crud->columns('fev_id', 'visit_id', 'fev_number');
 			
@@ -163,6 +145,7 @@ class Examples extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('Doctors');
 			$crud->set_subject('Doctors');
+			$crud->display_as('doctor_id','Doctor ID');
 			$crud->required_fields('doctor_id', 'doctor_name');
 			$crud->columns('doctor_id', 'doctor_name');
 			
@@ -181,48 +164,6 @@ class Examples extends CI_Controller {
 		return $value.' &euro;';
 	}
 
-	public function film_management()
-	{
-		       if(!$this->login_model->isLogged()){
-                                 //you are not permitted to see this page, so go to the login page
-                           $this->login_model->logout();
-                           return; //just in case...
-                      }
-
-		$crud = new grocery_CRUD();
-
-		$crud->set_table('film');
-		$crud->set_relation_n_n('actors', 'film_actor', 'actor', 'film_id', 'actor_id', 'fullname','priority');
-		$crud->set_relation_n_n('category', 'film_category', 'category', 'film_id', 'category_id', 'name');
-		$crud->unset_columns('special_features','description','actors');
-
-		$crud->fields('title', 'description', 'actors' ,  'category' ,'release_year', 'rental_duration', 'rental_rate', 'length', 'replacement_cost', 'rating', 'special_features');
-
-		$output = $crud->render();
-
-		$this->_example_output($output);
-	}
-
-	public function film_management_twitter_bootstrap()
-	{
-		try{
-			$crud = new grocery_CRUD();
-
-			$crud->set_theme('twitter-bootstrap');
-			$crud->set_table('film');
-			$crud->set_relation_n_n('actors', 'film_actor', 'actor', 'film_id', 'actor_id', 'fullname','priority');
-			$crud->set_relation_n_n('category', 'film_category', 'category', 'film_id', 'category_id', 'name');
-			$crud->unset_columns('special_features','description','actors');
-
-			$crud->fields('title', 'description', 'actors' ,  'category' ,'release_year', 'rental_duration', 'rental_rate', 'length', 'replacement_cost', 'rating', 'special_features');
-
-			$output = $crud->render();
-			$this->_example_output($output);
-
-		}catch(Exception $e){
-			show_error($e->getMessage().' --- '.$e->getTraceAsString());
-		}
-	}
 
 	function multigrids()
 	{
@@ -247,70 +188,10 @@ class Examples extends CI_Controller {
 		));
 	}
 
-	public function offices_management2()
-	{
-		$crud = new grocery_CRUD();
-		$crud->set_table('offices');
-		$crud->set_subject('Office');
+	
+	
 
-		$crud->set_crud_url_path(site_url(strtolower(__CLASS__."/".__FUNCTION__)),site_url(strtolower(__CLASS__."/multigrids")));
-
-		$output = $crud->render();
-
-		if($crud->getState() != 'list') {
-			$this->_example_output($output);
-		} else {
-			return $output;
-		}
-	}
-
-	public function employees_management2()
-	{
-		$crud = new grocery_CRUD();
-
-		$crud->set_theme('datatables');
-		$crud->set_table('employees');
-		$crud->set_relation('officeCode','offices','city');
-		$crud->display_as('officeCode','Office City');
-		$crud->set_subject('Employee');
-
-		$crud->required_fields('lastName');
-
-		$crud->set_field_upload('file_url','assets/uploads/files');
-
-		$crud->set_crud_url_path(site_url(strtolower(__CLASS__."/".__FUNCTION__)),site_url(strtolower(__CLASS__."/multigrids")));
-
-		$output = $crud->render();
-
-		if($crud->getState() != 'list') {
-			$this->_example_output($output);
-		} else {
-			return $output;
-		}
-	}
-
-	public function customers_management2()
-	{
-		$crud = new grocery_CRUD();
-
-		$crud->set_table('customers');
-		$crud->columns('customerName','contactLastName','phone','city','country','salesRepEmployeeNumber','creditLimit');
-		$crud->display_as('salesRepEmployeeNumber','from Employeer')
-			 ->display_as('customerName','Name')
-			 ->display_as('contactLastName','Last Name');
-		$crud->set_subject('Customer');
-		$crud->set_relation('salesRepEmployeeNumber','employees','lastName');
-
-		$crud->set_crud_url_path(site_url(strtolower(__CLASS__."/".__FUNCTION__)),site_url(strtolower(__CLASS__."/multigrids")));
-
-		$output = $crud->render();
-
-		if($crud->getState() != 'list') {
-			$this->_example_output($output);
-		} else {
-			return $output;
-		}
-	}
+	
 }
 /*public function users();
 	{
