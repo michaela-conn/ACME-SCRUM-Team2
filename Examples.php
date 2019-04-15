@@ -28,6 +28,73 @@ class Examples extends CI_Controller {
 	{
 		$this->_example_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
 	}
+	public function patients_management()
+	{
+		try{
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('Patients');
+			$crud->set_subject('Patients');
+			$crud->required_fields('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
+			$crud->columns('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
+			$crud->display_as('patient_id','Patient ID');
+			$crud->display_as('patient_other','Other information');
+
+			$output = $crud->render();
+			$output -> title = "Patients";
+			$this->_example_output($output);
+
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}
+	}
+	
+	public function prescriptions_management()
+	{
+		try{
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('Prescriptions');
+			$crud->set_subject('Prescriptions');
+			$crud->required_fields('pres_id', 'doctor_id', 'patient_id', 'med_id', 'dosage');
+			$crud->columns('pres_id', 'doctor_id', 'patient_id', 'med_id', 'dosage');
+			$crud->display_as('pres_id','Prescription ID');
+			$crud->display_as('doctor_id','Doctor ID');
+			$crud->display_as('patient_id','Patient ID');
+			$crud->display_as('med_id','Medication ID');
+
+			$output = $crud->render();
+			$output -> title = "Prescriptions";
+			$this->_example_output($output);
+
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}
+	}
+	
+	public function medications_management()
+	{
+		try{
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('Prescriptions');
+			$crud->set_subject('Prescriptions');
+			$crud->required_fields('med_id', 'med_name');
+			$crud->columns('med_id', 'med_name');
+			$crud->display_as('med_id','Medication ID');
+			$crud->display_as('med_name','Medication Name');
+
+			$output = $crud->render();
+			$output -> title = "Medications";
+			$this->_example_output($output);
+
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}
+	}
 
 	public function prescriptions_management()
 	{
