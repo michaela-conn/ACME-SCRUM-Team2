@@ -2,7 +2,7 @@
 $loginConfig = array(
 	"Page After Login" => "/examples/",
 	"Error Message" => "Your Username or Password are incorrect!",
-	"Use MD5 Encryption" => false,//give the access to encript the password
+	"Use MD5 Encryption" => true,//give the access to encript the password
 	"Show Permission Management Tips" => true, //suggested
 );
 
