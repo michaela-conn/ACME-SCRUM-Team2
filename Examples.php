@@ -91,29 +91,26 @@ class Examples extends CI_Controller {
 		}
 	}
 	
-	public function medications_management()
+public function medications_management()
 	{
 		if(!$this->login_model->isLogged()){
                                  //you are not permitted to see this page, so go to the login page
                            $this->login_model->logout();
                            return; //just in case...
                       }
-
 		try{
 			$crud = new grocery_CRUD();
-
 			$crud->set_theme('datatables');
 			$crud->set_table('Prescriptions');
 			$crud->set_subject('Prescriptions');
-			$crud->required_fields('med_id', 'med_name');
-			$crud->columns('med_id', 'med_name');
+			$crud->required_fields('med_id', 'med_name','enzyme');
+			$crud->columns('med_id', 'med_name','enzyme');
 			$crud->display_as('med_id','Medication ID');
 			$crud->display_as('med_name','Medication Name');
-
+			$crud->display_as('enzyme','Enzyme');
 			$output = $crud->render();
 			$output -> title = "Medications";
 			$this->_example_output($output);
-
 		}catch(Exception $e){
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
 		}
