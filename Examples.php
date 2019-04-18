@@ -47,7 +47,10 @@ class Examples extends CI_Controller {
 			$crud->required_fields('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
 			$crud->columns('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
 			$crud->display_as('patient_id','Patient ID');
+			$crud->display_as('patient_birthday', 'Patient Birthday');
 			$crud->display_as('patient_other','Other information');
+			
+			$crud->callback_column('age', array($this, 'calc_age'));
 
 			$output = $crud->render();
 			$output -> title = "Patients";
@@ -220,3 +223,6 @@ class Examples extends CI_Controller {
 	}
 
 }
+	public function calc_age($value, $row) {
+		return date_diff(date_create($row->patient_birthday), date_create('now'))->y;
+	}
