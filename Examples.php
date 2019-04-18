@@ -8,6 +8,7 @@ class Examples extends CI_Controller {
 
 		$this->load->database();
 		$this->load->helper('url');
+		$this->load->model('login_model');
 
 		$this->load->library('grocery_CRUD');
 	}
@@ -28,91 +29,101 @@ class Examples extends CI_Controller {
 	{
 		$this->_example_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
 	}
-
-	public function doctors_management()
-	{
-		try{
-			$crud = new grocery_CRUD();
-			
-			$crud->set_theme('datatables');
-			$crud->set_table('Doctors');
-			$crud->set_subject('Doctors');
-			$crud->required_fields('doctor_id', 'doctor_name');
-			$crud->columns('doctor_id', 'doctor_name');
-			$crud->display_as('doctor_id','Doctor ID');
-			$crud->display_as('doctor_name','Doctor Name');
-			
-			$output = $crud->render();
-			
-			$this->_example_output($output);
-			
-		}catch(Exception $e){
-			show_error($e->getMessage().' --- '.$e->getTraceAsString());
-			}
-	}
 	
 	public function patients_management()
-		{
-			try{
-				$crud = new grocery_CRUD();
-				$crud->set_theme('datatables');
-				$crud->set_table('Patients');
-				$crud->set_subject('Patients');
-				$crud->required_fields('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
-				$crud->columns('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
-				$crud->display_as('patient_id','Patient ID');
-				$crud->display_as('patient_other','Other information');
-				$output = $crud->render();
-				$output -> title = "Patients";
-				$this->_example_output($output);
-			}catch(Exception $e){
-				show_error($e->getMessage().' --- '.$e->getTraceAsString());
-			}
-		}	
-	
-	
-		public function prescriptions_management()
-			{
-				try{
-					$crud = new grocery_CRUD();
-					$crud->set_theme('datatables');
-					$crud->set_table('Prescriptions');
-					$crud->set_subject('Prescriptions');
-					$crud->required_fields('pres_id', 'doctor_id', 'patient_id', 'med_id', 'dosage');
-					$crud->columns('pres_id', 'doctor_id', 'patient_id', 'med_id', 'dosage');
-					$crud->display_as('pres_id','Prescription ID');
-					$crud->display_as('doctor_id','Doctor ID');
-					$crud->display_as('patient_id','Patient ID');
-					$crud->display_as('med_id','Medication ID');
-					$output = $crud->render();
-					$output -> title = "Prescriptions";
-					$this->_example_output($output);
-				}catch(Exception $e){
-					show_error($e->getMessage().' --- '.$e->getTraceAsString());
-				}
-			}
+	{
+		if(!$this->login_model->isLogged()){
+                                 //you are not permitted to see this page, so go to the login page
+                           $this->login_model->logout();
+                           return; //just in case...
+                      }
 
-	public function medications_management()
-		{
-			try{
-				$crud = new grocery_CRUD();
-				$crud->set_theme('datatables');
-				$crud->set_table('Medications');
-				$crud->set_subject('Medications');
-				$crud->required_fields('med_id', 'med_name');
-				$crud->columns('med_id', 'med_name');
-				$crud->display_as('med_id','Medication ID');
-				$crud->display_as('med_name','Medication Name');
-				$output = $crud->render();
-				$output -> title = "Medications";
-				$this->_example_output($output);
-			}catch(Exception $e){
-				show_error($e->getMessage().' --- '.$e->getTraceAsString());
-			}
+		try{
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('Patients');
+			$crud->set_subject('Patients');
+			$crud->required_fields('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
+			$crud->columns('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
+			$crud->display_as('patient_id','Patient ID');
+			$crud->display_as('patient_other','Other information');
+
+			$output = $crud->render();
+			$output -> title = "Patients";
+			$this->_example_output($output);
+
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
 		}
+	}
+	
+	public function prescriptions_management()
+	{
+		if(!$this->login_model->isLogged()){
+                                 //you are not permitted to see this page, so go to the login page
+                           $this->login_model->logout();
+                           return; //just in case...
+                      }
 
+		try{
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('Prescriptions');
+			$crud->set_subject('Prescriptions');
+			$crud->required_fields('pres_id', 'doctor_id', 'patient_id', 'med_id', 'dosage');
+			$crud->columns('pres_id', 'doctor_id', 'patient_id', 'med_id', 'dosage');
+			$crud->display_as('pres_id','Prescription ID');
+			$crud->display_as('doctor_id','Doctor ID');
+			$crud->display_as('patient_id','Patient ID');
+			$crud->display_as('med_id','Medication ID');
+
+			$output = $crud->render();
+			$output -> title = "Prescriptions";
+			$this->_example_output($output);
+
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}
+	}
+	
+	public function medications_management()
+	{
+		if(!$this->login_model->isLogged()){
+                                 //you are not permitted to see this page, so go to the login page
+                           $this->login_model->logout();
+                           return; //just in case...
+                      }
+
+		try{
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('Prescriptions');
+			$crud->set_subject('Prescriptions');
+			$crud->required_fields('med_id', 'med_name');
+			$crud->columns('med_id', 'med_name');
+			$crud->display_as('med_id','Medication ID');
+			$crud->display_as('med_name','Medication Name');
+
+			$output = $crud->render();
+			$output -> title = "Medications";
+			$this->_example_output($output);
+
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}
+	}
+	
 	public function visits_management()
 	{
+		if(!$this->login_model->isLogged()){
+                                 //you are not permitted to see this page, so go to the login page
+                           $this->login_model->logout();
+                           return; //just in case...
+                      }
+
 		try{
 			$crud = new grocery_CRUD();
 			
@@ -121,11 +132,6 @@ class Examples extends CI_Controller {
 			$crud->set_subject('Visits');
 			$crud->required_fields('visit_id', 'doctor_id', 'patient_id', 'visit_date');
 			$crud->columns('visit_id', 'doctor_id', 'patient_id', 'visit_date');
-			$crud->display_as('visit_id','Visit ID');
-			$crud->display_as('doctor_id','Doctor ID');
-			$crud->display_as('patient_id','Patient ID');
-			$crud->display_as('visit_date','Visit Date');
-			
 			
 			$output = $crud->render();
 			
@@ -138,17 +144,20 @@ class Examples extends CI_Controller {
 	
 		public function fev_management()
 	{
+		if(!$this->login_model->isLogged()){
+                                 //you are not permitted to see this page, so go to the login page
+                           $this->login_model->logout();
+                           return; //just in case...
+                      }
+
 		try{
 			$crud = new grocery_CRUD();
 			
 			$crud->set_theme('datatables');
 			$crud->set_table('FEV');
 			$crud->set_subject('FEV');
-			$crud->required_fields('fev_id', 'visit_id', 'fev_number');
-			$crud->columns('fev_id', 'visit_id', 'fev_number');
-			$crud->display_as('fev_id','FEV ID');
-			$crud->display_as('visit_id','Visit ID');
-			$crud->display_as('fev_number','FEV Number');
+			$crud->required_fields('fev_id', 'visit_id', 'fev_num');
+			$crud->columns('fev_id', 'visit_id', 'fev_num');
 			
 			$output = $crud->render();
 			
@@ -158,35 +167,56 @@ class Examples extends CI_Controller {
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
 			}
 	}
-
-
-	public function valueToEuro($value, $row)
+	
+	public function doctors_management()
 	{
-		return $value.' &euro;';
+		if(!$this->login_model->isLogged()){
+                                 //you are not permitted to see this page, so go to the login page
+                           $this->login_model->logout();
+                           return; //just in case...
+                      }
+
+		try{
+			$crud = new grocery_CRUD();
+			
+			$crud->set_theme('datatables');
+			$crud->set_table('Doctors');
+			$crud->set_subject('Doctors');
+			$crud->required_fields('doctor_id', 'doctor_name');
+			$crud->columns('doctor_id', 'doctor_name');
+			
+			$output = $crud->render();
+			
+			$this->_example_output($output);
+			
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+			}
 	}
-
-
-	function multigrids()
+	
+	public function users()
 	{
-		$this->config->load('grocery_crud');
-		$this->config->set_item('grocery_crud_dialog_forms',true);
-		$this->config->set_item('grocery_crud_default_per_page',10);
-
-		$output1 = $this->offices_management2();
-
-		$output2 = $this->employees_management2();
-
-		$output3 = $this->customers_management2();
-
-		$js_files = $output1->js_files + $output2->js_files + $output3->js_files;
-		$css_files = $output1->css_files + $output2->css_files + $output3->css_files;
-		$output = "<h1>List 1</h1>".$output1->output."<h1>List 2</h1>".$output2->output."<h1>List 3</h1>".$output3->output;
-
-		$this->_example_output((object)array(
-				'js_files' => $js_files,
-				'css_files' => $css_files,
-				'output'	=> $output
-		));
+		$crud = new grocery_CRUD();
+		$crud-> set_table('crud_users');
+		$crud -> set_subject('Users');
+		$crud -> required_fields('username', 'password');
+		$crud -> columns('username', 'password', 'permissions');
+		$crud -> change_field_type('password', 'password');
+		$crud -> unset_read()->unset_export()->unset_print();
+		$crud -> callback_before_insert(array($this, 'encrypt_pw'));
+		$crud -> callback_before_update(array($this, 'encrypt_pw'));
+		$output = $crud ->render();
+		$this->_example_output($output);
+	}
+	
+	function encrypt_pw($post_array)
+	{
+		if(!empty($post_array['password']))
+		{
+			$post_array['password'] = MD5($_POST['password']);
+			
+		}
+		return $post_array;
 	}
 
 }
