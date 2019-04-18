@@ -5,12 +5,9 @@ $loginConfig = array(
 	"Use MD5 Encryption" => true,//give the access to encript the password
 	"Show Permission Management Tips" => true, //suggested
 );
-
 /* INSTRUCTIONS? GO TO https://github.com/portapipe/Login-GroceryCrud */
 /* Login-GroceryCrud by portapipe */
 class Login extends CI_Controller {
-
-
 	public function __construct(){
 		parent::__construct();	
 		$this->load->database();
@@ -20,7 +17,6 @@ class Login extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('login_model');
 	}
-
 	/* LOGIN PAGE */
 	function index() {
 		global $loginConfig;
@@ -31,7 +27,6 @@ class Login extends CI_Controller {
 			echo "SYSTEM REQUIREMENT: SQL TABLE crud_users DOESN'T EXISTS BUT... Hey, we can do it for you, if the database connection is configured correctly ;)<p><a href=\"".base_url()."login/createDBTable\"><button>Create the required table in your MySQL database</button></a></p>Oh, a user 'admin' (password 'admin') will be create too, so you can log in directly! Just click on the button!";
 			echo "<p><br/><i>...this is a one-time-only step!</i></p>";
 		}
-
 	}
 	
 	/* LOGIN PROCESS (not a page) */
@@ -41,6 +36,7 @@ class Login extends CI_Controller {
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
 		if($loginConfig['Use MD5 Encryption']) $password = md5($password);
+
 		
        	$this->db->where("username",$username);
         $this->db->where("password",$password);
@@ -58,7 +54,6 @@ class Login extends CI_Controller {
 			$this->load->view('login.php', $data);
 		}
 	}
-
 	/* LOGOUT */
 	function logout() {
 		$this->login_model->logout();
@@ -135,9 +130,7 @@ class Login extends CI_Controller {
 		$crud->set_subject('Permission Management');
 		$crud->required_fields('name');
         $crud->columns('name');
-
 		$crud->unset_read();
-
 		$crud->callback_field('permissions',array($this,'create_permissions_grid'));
 		$crud->callback_before_insert(array($this,'elaborate_the_grid_then_update'));
 		$crud->callback_before_update(array($this,'elaborate_the_grid_then_update'));
@@ -193,7 +186,6 @@ class Login extends CI_Controller {
 		$return .= '<tr>
 	    <td>'.$a.'</td>
 	    ';
-
 		$return .= '
 		<td><input type="checkbox" name="'.$a.'[1]" value="0" '.($this->login_model->IDOnly($a,$perm)?'checked':'').'/></td>
 		';
@@ -221,7 +213,6 @@ class Login extends CI_Controller {
 			How it works the GRID: Selected = YES | Deselected = NO<br/>
 			Tips: NEVER let the admin without the full permissions!<br/>
 			Tips 2: Give this page JUST to someone that know what he\'s doing!</h5>';
-
 		return $return;
 	}
 	
