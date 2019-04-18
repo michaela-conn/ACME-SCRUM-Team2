@@ -221,8 +221,10 @@ class Examples extends CI_Controller {
 		}
 		return $post_array;
 	}
-
-}
+	
 	public function calc_age($value, $row) {
 		return date_diff(date_create($row->patient_birthday), date_create('now'))->y;
 	}
+
+}
+	
