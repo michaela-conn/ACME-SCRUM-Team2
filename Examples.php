@@ -51,7 +51,8 @@ class Examples extends CI_Controller {
 			$crud->display_as('patient_other','Other information');
 			
 			$crud->callback_column('age', array($this, 'calc_age'));
-
+			$crud->unset_delete();
+			$crud->unset_clone();
 			$output = $crud->render();
 			$output -> title = "Patients";
 			$this->_example_output($output);
@@ -81,7 +82,8 @@ class Examples extends CI_Controller {
 			$crud->display_as('doctor_id','Doctor ID');
 			$crud->display_as('patient_id','Patient ID');
 			$crud->display_as('med_id','Medication ID');
-
+			$crud->unset_delete();
+			$crud->unset_clone();
 			$output = $crud->render();
 			$output -> title = "Prescriptions";
 			$this->_example_output($output);
@@ -108,6 +110,8 @@ public function medications_management()
 			$crud->display_as('med_id','Medication ID');
 			$crud->display_as('med_name','Medication Name');
 			$crud->display_as('enzyme','Enzyme');
+			$crud->unset_delete();
+			$crud->unset_clone();
 			$output = $crud->render();
 			$output -> title = "Medications";
 			$this->_example_output($output);
@@ -132,7 +136,8 @@ public function medications_management()
 			$crud->set_subject('Visits');
 			$crud->required_fields('visit_id', 'doctor_id', 'patient_id', 'visit_date');
 			$crud->columns('visit_id', 'doctor_id', 'patient_id', 'visit_date');
-			
+			$crud->unset_delete();
+			$crud->unset_clone();
 			$output = $crud->render();
 			
 			$this->_example_output($output);
@@ -158,7 +163,8 @@ public function medications_management()
 			$crud->set_subject('FEV');
 			$crud->required_fields('fev_id', 'visit_id', 'fev_num');
 			$crud->columns('fev_id', 'visit_id', 'fev_num');
-			
+			$crud->unset_delete();
+			$crud->unset_clone();
 			$output = $crud->render();
 			
 			$this->_example_output($output);
@@ -184,7 +190,8 @@ public function medications_management()
 			$crud->set_subject('Doctors');
 			$crud->required_fields('doctor_id', 'doctor_name');
 			$crud->columns('doctor_id', 'doctor_name');
-			
+			$crud->unset_delete();
+			$crud->unset_clone();
 			$output = $crud->render();
 			
 			$this->_example_output($output);
