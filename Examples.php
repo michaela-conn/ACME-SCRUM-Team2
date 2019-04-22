@@ -45,11 +45,14 @@ class Examples extends CI_Controller {
 			$crud->set_table('Patients');
 			$crud->set_subject('Patients');
 			$crud->required_fields('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
-			$crud->columns('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'patient_genetics', 'patient_diabetes', 'patient_other');
+			$crud->columns('patient_id', 'first_name', 'last_name', 'patient_gender', 'patient_birthday', 'age', 'patient_genetics', 'patient_diabetes', 'patient_other');
 			$crud->display_as('patient_id','Patient ID');
-			$crud->display_as('patient_birthday', 'Patient Birthday');
 			$crud->display_as('patient_other','Other information');
-			
+			$crud -> field_type('patient_other', 'text');
+			$crud -> field_type('patient_genetics', 'text');
+			$crud -> field_type('patient_gender', 'dropdown', array('female' => 'female', 'male' => 'male', 'other' => 'other', 'prefer not to say' => 'prefer not to say'));
+			$crud -> field_type('patient_birthday', 'date');
+
 			$crud->callback_column('age', array($this, 'calc_age'));
 			$crud->unset_delete();
 			$crud->unset_clone();
@@ -79,15 +82,17 @@ class Examples extends CI_Controller {
 			$crud->required_fields('pres_id', 'doctor_id', 'patient_id', 'med_id', 'dosage');
 			$crud->columns('pres_id', 'doctor_id', 'patient_id', 'med_id', 'dosage');
 			$crud->display_as('pres_id','Prescription ID');
-			$crud->display_as('doctor_id','Doctor ID');
-			$crud->display_as('patient_id','Patient ID');
-			$crud->display_as('med_id','Medication ID');
-			$crud->set_relation('doctor_id','Doctors','doctor_id');
-			$crud->set_relation('patient_id','Patients','patient_id');
-			$crud->set_relation('med_id','Medications','med_id');
+			$crud->display_as('doctor_id','Doctor Name');
+			$crud->display_as('patient_id','Patient Name');
+			$crud->display_as('med_id','Medication Name');
+			$crud -> set_relation('patient_id', 'Patients','{first_name} {last_name}');
+			$crud -> set_relation('doctor_id', 'Doctors', 'doctor_name');
+			$crud -> set_relation('med_id', 'Medications', 'med_name');
+			
 			$crud->unset_delete();
 			$crud->unset_clone();
 			$output = $crud->render();
+			
 			$output -> title = "Prescriptions";
 			$this->_example_output($output);
 
@@ -96,28 +101,32 @@ class Examples extends CI_Controller {
 		}
 	}
 	
-public function medications_management()
+	public function medications_management()
 	{
 		if(!$this->login_model->isLogged()){
                                  //you are not permitted to see this page, so go to the login page
                            $this->login_model->logout();
                            return; //just in case...
                       }
+
 		try{
 			$crud = new grocery_CRUD();
+
 			$crud->set_theme('datatables');
-			$crud->set_table('Prescriptions');
-			$crud->set_subject('Prescriptions');
-			$crud->required_fields('med_id', 'med_name','enzyme');
-			$crud->columns('med_id', 'med_name','enzyme');
+			$crud->set_table('Medications');
+			$crud->set_subject('Medications');
+			$crud->required_fields('med_id', 'med_name');
+			$crud->columns('med_id', 'med_name');
 			$crud->display_as('med_id','Medication ID');
 			$crud->display_as('med_name','Medication Name');
-			$crud->display_as('enzyme','Enzyme');
+			
 			$crud->unset_delete();
 			$crud->unset_clone();
 			$output = $crud->render();
+			
 			$output -> title = "Medications";
 			$this->_example_output($output);
+
 		}catch(Exception $e){
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
 		}
@@ -138,12 +147,19 @@ public function medications_management()
 			$crud->set_table('Visits');
 			$crud->set_subject('Visits');
 			$crud->required_fields('visit_id', 'doctor_id', 'patient_id', 'visit_date');
+			//$crud -> display_as('visit_date', 'Visit Date');
+			$crud -> field_type('visit_date', 'date');
+			//$crud -> set_rules('visit_date', 'Visit Date', array('required'));
+			$crud -> set_relation('doctor_id', 'Doctors', 'doctor_name');
+			$crud -> set_relation('patient_id', 'Patients','{first_name} {last_name}');
 			$crud->columns('visit_id', 'doctor_id', 'patient_id', 'visit_date');
-			$crud->set_relation('patient_id','Patients','patient_id');
-			$crud->set_relation('doctor_id','Doctors','doctor_id');
+			$crud -> display_as('doctor_id', 'Doctor Name');
+			$crud -> display_as('patient_id', 'Patient Name');
+			
 			$crud->unset_delete();
 			$crud->unset_clone();
 			$output = $crud->render();
+
 			
 			$this->_example_output($output);
 			
@@ -206,6 +222,7 @@ public function medications_management()
 			$crud->unset_clone();
 			$output = $crud->render();
 			
+			
 			$this->_example_output($output);
 			
 		}catch(Exception $e){
@@ -224,7 +241,10 @@ public function medications_management()
 		$crud -> unset_read()->unset_export()->unset_print();
 		$crud -> callback_before_insert(array($this, 'encrypt_pw'));
 		$crud -> callback_before_update(array($this, 'encrypt_pw'));
+		$crud->unset_delete();
+		$crud->unset_clone();
 		$output = $crud ->render();
+		
 		$this->_example_output($output);
 	}
 	
@@ -243,4 +263,3 @@ public function medications_management()
 	}
 
 }
-	
