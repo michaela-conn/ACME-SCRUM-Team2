@@ -82,6 +82,9 @@ class Examples extends CI_Controller {
 			$crud->display_as('doctor_id','Doctor ID');
 			$crud->display_as('patient_id','Patient ID');
 			$crud->display_as('med_id','Medication ID');
+			$crud->set_relation('doctor_id','Doctors','doctor_id');
+			$crud->set_relation('patient_id','Patients','patient_id');
+			$crud->set_relation('med_id','Medications','med_id');
 			$crud->unset_delete();
 			$crud->unset_clone();
 			$output = $crud->render();
@@ -136,6 +139,8 @@ public function medications_management()
 			$crud->set_subject('Visits');
 			$crud->required_fields('visit_id', 'doctor_id', 'patient_id', 'visit_date');
 			$crud->columns('visit_id', 'doctor_id', 'patient_id', 'visit_date');
+			$crud->set_relation('patient_id','Patients','patient_id');
+			$crud->set_relation('doctor_id','Doctors','doctor_id');
 			$crud->unset_delete();
 			$crud->unset_clone();
 			$output = $crud->render();
