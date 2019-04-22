@@ -161,11 +161,18 @@ public function medications_management()
 			$crud->set_theme('datatables');
 			$crud->set_table('FEV');
 			$crud->set_subject('FEV');
+			
+			$crud -> set_rules('visit_id', 'Visit', 'htmlspecialchars|required|max_length[19]');
+			$crud -> display_as('visit_id', 'Visit Info');
+			$crud -> display_as('fev_num', 'FEV');
+			$crud -> set_relation('visit_id', 'Visits', '{doctor_id} -> {patient_id} on {visit_date}');
 			$crud->required_fields('fev_id', 'visit_id', 'fev_num');
-			$crud->columns('fev_id', 'visit_id', 'fev_num');
+			
+			$crud->columns('visit_id', 'fev_num');
 			$crud->unset_delete();
 			$crud->unset_clone();
 			$output = $crud->render();
+			
 			
 			$this->_example_output($output);
 			
